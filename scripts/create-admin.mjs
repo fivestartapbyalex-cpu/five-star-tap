@@ -13,7 +13,8 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 
-const ITERATIONS = 210_000;
+// Must match src/auth.js. Capped by the Workers runtime.
+const ITERATIONS = 100_000;
 
 const args = process.argv.slice(2);
 const remote = args.includes('--remote');

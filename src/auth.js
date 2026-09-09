@@ -2,12 +2,17 @@
  * Passwords and sessions on the Workers runtime.
  *
  * The Node build used scrypt; WebCrypto does not offer it, so passwords are
- * PBKDF2-HMAC-SHA256 at 210,000 iterations (the OWASP figure for SHA-256).
- * Sessions stay the same shape as before: an HMAC-signed cookie, no server
- * state to keep.
+ * PBKDF2-HMAC-SHA256.
+ *
+ * The iteration count is pinned to 100,000 because that is the ceiling the
+ * Workers runtime enforces on deriveBits -- anything higher throws a
+ * DOMException. That is below OWASP's current advice for SHA-256, so the
+ * login throttle in front of it (8 attempts per email/IP per 15 minutes) is
+ * doing real work here, not just politeness.
  */
 
-const ITERATIONS = 210_000;
+const MAX_ITERATIONS = 100_000;   // hard limit imposed by the Workers runtime
+const ITERATIONS = MAX_ITERATIONS;
 const SESSION_DAYS = 30;
 const COOKIE = 'fs_session';
 
@@ -46,12 +51,24 @@ export async function verifyPassword(password, stored) {
   if (typeof stored !== 'string') return false;
   const parts = stored.split('$');
   if (parts.length !== 4 || parts[0] !== 'pbkdf2') return false;
+
   const iterations = Number(parts[1]);
   if (!Number.isFinite(iterations) || iterations < 1000) return false;
+  if (iterations > MAX_ITERATIONS) {
+    // Would throw below. Say so loudly rather than reporting it as a simple
+    // password mismatch, which is a genuinely baffling thing to debug.
+    console.error(
+      `[auth] stored hash uses ${iterations} PBKDF2 iterations; this runtime `
+      + `caps deriveBits at ${MAX_ITERATIONS}. Re-hash the password.`,
+    );
+    return false;
+  }
+
   try {
     const attempt = await pbkdf2(password, unb64(parts[2]), iterations);
     return sameBytes(attempt, unb64(parts[3]));
-  } catch {
+  } catch (err) {
+    console.error('[auth] password verification failed to run:', err);
     return false;
   }
 }

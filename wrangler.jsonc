@@ -17,9 +17,15 @@
     {
       "binding": "DB",
       "database_name": "fivestartap",
-      // Filled in by `npx wrangler d1 create fivestartap`.
-      "database_id": "PLACEHOLDER_RUN_D1_CREATE"
+      "database_id": "1b5e17ce-46b4-46a6-a31a-b8133410951d"
     }
+  ],
+
+  // The live domain. Wrangler creates the DNS records and the certificate,
+  // because the zone lives in the same Cloudflare account.
+  "routes": [
+    { "pattern": "getfivestartap.com", "custom_domain": true },
+    { "pattern": "www.getfivestartap.com", "custom_domain": true }
   ],
 
   "vars": {
