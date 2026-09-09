@@ -1,9 +1,11 @@
 # Dependencies
 node_modules/
 
-# The database. Contains password hashes and the session-signing secret --
-# it must never reach a git repo, public or private.
+# Local D1 database and wrangler state. Contains password hashes and the
+# session-signing secret -- it must never reach a git repo, public or private.
+.wrangler/
 data/
+.dev.vars
 
 # Logs and OS noise
 *.log
@@ -14,3 +16,4 @@ Thumbs.db
 # Local environment
 .env
 .env.local
+.dev-data/

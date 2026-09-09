@@ -21,21 +21,29 @@ can read and edit.
 
 ## Running it
 
+Runs on **Cloudflare Workers + D1** — free tier, no cold starts, nothing to
+maintain. One Worker serves the public site, the tool and the API; D1 (managed
+SQLite) holds the data.
+
 ```bash
 npm install
-npm start
+npm run dev          # wrangler dev — the real Workers runtime
 ```
 
-Open <http://localhost:3000>.
-
-On the very first start an admin account is created and its password is
-printed to the console **once**. To choose your own instead:
+If `wrangler dev` crashes on startup (workerd segfaults on some Windows
+machines, independent of this project), use the Node harness instead. It runs
+the identical Hono app with a D1 shim over `node:sqlite` — the same engine D1
+uses, so the SQL is genuinely exercised:
 
 ```bash
-ADMIN_NAME=Alex ADMIN_EMAIL=alex@yourdomain.com ADMIN_PASSWORD=something-long npm start
+npm run dev:node     # http://localhost:8787
 ```
 
-Sign in, then go to **Team** to add the reps.
+Create the first admin (works against either database):
+
+```bash
+npm run create-admin -- --local "Alex" you@example.com "a-long-password"
+```
 
 ---
 
@@ -124,30 +132,23 @@ only, with the sender's email and phone as one-tap links. There is a honeypot
 field and a cap of five submissions per IP per hour, so ordinary bot spam does
 not reach the inbox.
 
-Inquiries are stored in `data/db.json` alongside everything else. If you would
-rather they also arrive by email, that is a small addition — the write happens
-in one place, `POST /api/inquiry` in `server.js`.
+Inquiries are stored in D1 alongside everything else. If you would rather they
+also arrive by email, that is a small addition — the write happens in one
+place, `POST /api/inquiry` in `src/index.js`.
 
 ---
 
 ## Configuration
 
-All optional — set as environment variables.
+Set in `wrangler.jsonc` under `vars` (or as secrets for anything sensitive).
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `PORT` | `3000` | Port to listen on |
-| `DATA_DIR` | `./data` | Where the database file lives |
-| `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | — | First-run admin (first start only) |
-| `NODE_ENV` | — | Set to `production` to mark the session cookie `Secure` |
 | `BRAND_NAME` | `Five Star Tap` | Name reported to the client |
-| `TILE_LIGHT` / `TILE_DARK` | Esri grey canvas | Basemap tile URLs |
-| `TILE_ATTRIB` | Esri + OpenStreetMap | Attribution line (required by most providers) |
-| `TILE_MAX_NATIVE_ZOOM` | `16` | Deepest zoom the provider actually has tiles for |
-| `TILE_MAX_ZOOM` | `19` | Deepest zoom the user can reach (upscaled past native) |
 | `MAP_LAT` / `MAP_LNG` | `41.20` / `-73.70` | Where the map opens before any pins exist |
 | `MAP_ZOOM` | `10` | Opening zoom level |
-| `NOMINATIM_UA` | app identifier | User-Agent sent to Nominatim |
+
+Basemap URLs and zoom ceilings live in `TILES` at the top of `src/index.js`.
 
 ### Where the map opens
 
@@ -157,36 +158,33 @@ the starting view, set `MAP_LAT`, `MAP_LNG` and `MAP_ZOOM`.
 
 ### Swapping the basemap
 
-The default is Esri's grey canvas: no key, quiet enough that the rep colours
-carry the map. Its tiles stop at zoom 16, which is why `TILE_MAX_NATIVE_ZOOM`
-defaults to 16 — past that Leaflet upscales rather than requesting tiles the
-provider does not have.
+The default is Esri's grey canvas: no key, quiet enough that the rep colors
+carry the map. Its tiles stop at zoom 16, which is why `maxNativeZoom` is 16 —
+past that Leaflet upscales rather than requesting tiles the provider does not
+have.
 
-To use standard OpenStreetMap instead:
+To use standard OpenStreetMap instead, edit `TILES` in `src/index.js`:
 
-```bash
-TILE_LIGHT=https://tile.openstreetmap.org/{z}/{x}/{y}.png \
-TILE_DARK=https://tile.openstreetmap.org/{z}/{x}/{y}.png \
-TILE_ATTRIB='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' \
-TILE_MAX_NATIVE_ZOOM=19 \
-npm start
+```js
+const TILES = {
+  light: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  dark:  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 19,
+  maxNativeZoom: 19,
+};
 ```
 
 ---
 
 ## Data
 
-Everything lives in one file: `data/db.json` — users, locations, notes and
-website inquiries.
-Back it up by copying that file.
+Everything is in D1: users, locations, notes and website inquiries. The schema
+is `schema.sql` — five tables plus a throttle table for login and spam limits.
 
-```bash
-npm run reset   # wipe data/ and start over with a fresh admin
-```
-
-Deleting a rep never deletes their work: their pins and notes stay, become
-unassigned, and a timestamped copy of the database is written to
-`data/backups/` first.
+Deleting a rep never deletes their work: their pins and notes stay and simply
+become unassigned, and the API reports how many were affected so the UI can say
+so.
 
 ---
 
@@ -257,27 +255,59 @@ professional address on the site without a new mailbox to check.
 
 ## Deploying
 
-It is a single Node process with no build step and one dependency (Express),
-so anything that runs Node works — Render, Railway, Fly.io, a small VPS.
+One-time setup:
 
-Two things matter:
+```bash
+npx wrangler login                     # opens the browser to authorize
+npm run db:create                      # prints a database_id
+```
 
-1. **Persist `data/`.** On platforms with ephemeral disks, attach a volume and
-   point `DATA_DIR` at it, or the database is lost on every redeploy.
-2. **Serve over HTTPS and set `NODE_ENV=production`**, which marks the session
-   cookie `Secure`. Browsers also only grant geolocation on a secure origin, so
-   the "show my location" button needs HTTPS off localhost.
+Paste that `database_id` into `wrangler.jsonc`, then:
+
+```bash
+npm run db:init:remote                 # create the tables on live D1
+npm run deploy                         # publish the Worker
+npm run create-admin -- --remote "Alex" you@example.com "a-long-password"
+```
+
+That gives you a working `*.workers.dev` URL. To put it on the real domain, add
+the custom domain in the Cloudflare dashboard (Workers & Pages → your worker →
+Settings → Domains & Routes → Add custom domain). If the domain is registered
+at Cloudflare, DNS and the TLS certificate are handled automatically — there
+are no records to add by hand.
+
+### Costs
+
+| | |
+| --- | --- |
+| Workers | Free — 100,000 requests/day |
+| D1 | Free — 5 GB, 5M row reads and 100k row writes/day |
+| Static assets | Free, unlimited |
+| Domain | ~$10–15/year, the only bill |
+
+A local business site and a few reps use a rounding error of those limits.
+
+### Backups
+
+D1 keeps point-in-time recovery automatically. For your own copy:
+
+```bash
+npx wrangler d1 export fivestartap --remote --output backup.sql
+```
 
 ---
 
 ## Security notes
 
-- Passwords are hashed with scrypt and a per-user salt; the hash never leaves
-  the server.
-- Sessions are HMAC-signed cookies (HttpOnly, SameSite=Lax, 30 days), signed
-  with a secret generated on first run and stored in `data/db.json`. Deleting
-  that secret signs everyone out.
-- Failed sign-ins are throttled to 8 per email/IP per 15 minutes.
+- Passwords are hashed with PBKDF2-HMAC-SHA256 at 210,000 iterations and a
+  per-user salt; the hash never leaves the server. (The Workers runtime has no
+  scrypt, which the earlier Node build used.)
+- Sessions are HMAC-signed cookies (HttpOnly, Secure, SameSite=Lax, 30 days),
+  signed with a secret generated on first use and kept in the `meta` table.
+  Deleting that row signs everyone out.
+- Failed sign-ins are throttled to 8 per email/IP per 15 minutes, and the
+  contact form to 5 per IP per hour. Both counters live in D1, because a
+  Worker isolate is too short-lived to count anything on its own.
 - Every permission rule is enforced on the server, not just hidden in the UI:
   the rep field rejects non-admin writes, the Team page rejects non-admins, and
   the last remaining admin cannot demote, disable or delete themselves.
@@ -287,23 +317,30 @@ Two things matter:
 ## Layout
 
 ```
-server.js           HTTP routes and all permission checks
-lib/store.js        JSON-file store with atomic writes
-lib/auth.js         scrypt passwords, signed-cookie sessions
-lib/places.js       Google link parsing, geocoding, reverse geocoding
+wrangler.jsonc          Worker config: assets, D1 binding, map defaults
+schema.sql              D1 tables
+src/index.js            Every route and permission check (Hono)
+src/db.js               D1 queries and row -> JSON mappers
+src/auth.js             PBKDF2 passwords, HMAC-signed session cookies
+src/places.js           Google link parsing, geocoding, reverse geocoding
+scripts/create-admin.mjs   Makes the first admin (hash computed locally)
+scripts/dev-node.mjs       Dev harness: same app, D1 shim over node:sqlite
 public/
-  index.html        The public marketing site
-  signin.html       Sign in
-  app.html          The territory map
-  team.html         Accounts and rep colours (admin)
-  leads.html        Website inquiries (admin)
-  app.css           Design tokens and every app component
-  site.css          Marketing-only styles, layered on app.css
-  js/core.js        fetch wrapper, DOM helpers, theme, icons
-  js/site.js        Nav, scroll reveal, contact form
-  js/signin.js      Sign in
-  js/app.js         Map, rail, detail drawer, add-location flow
-  js/team.js        Account management
-  js/leads.js       Inquiry inbox
-  vendor/leaflet.*  Vendored so the map works on a weak connection
+  index.html            The public marketing site
+  signin.html           Sign in
+  app.html              The territory map
+  team.html             Accounts and rep colors (admin)
+  leads.html            Website inquiries (admin)
+  app.css               Design tokens and every app component
+  site.css              Marketing-only styles, layered on app.css
+  js/core.js            fetch wrapper, DOM helpers, theme, icons
+  js/site.js            Nav, scroll reveal, contact form
+  js/signin.js          Sign in
+  js/app.js             Map, rail, detail drawer, add-location flow
+  js/team.js            Account management
+  js/leads.js           Inquiry inbox
+  vendor/leaflet.*      Vendored so the map works on a weak connection
 ```
+
+The browser code is untouched by the move to Cloudflare — the API returns the
+same JSON shapes it always did.

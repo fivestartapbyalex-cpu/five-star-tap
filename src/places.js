@@ -6,6 +6,10 @@
  * No Google API key required. Short links are followed server-side, place
  * details are read out of the resolved URL / page markup, and anything still
  * missing a coordinate is geocoded through OpenStreetMap's Nominatim.
+ *
+ * Workers build: the parsing below is unchanged from the Node version, but the
+ * Nominatim rate gate is kept in D1 rather than module state — isolates are
+ * short-lived and a per-isolate timer would not actually pace anything.
  */
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
@@ -13,22 +17,26 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
 
 /* Nominatim's usage policy caps us at 1 request/second and wants a real
    identifying User-Agent. Both are honored here. */
-const NOMINATIM_UA = process.env.NOMINATIM_UA ||
-  'FiveStarTap/1.0 (self-hosted NFC review-tag territory map)';
-let nominatimChain = Promise.resolve();
-let lastNominatim = 0;
+const NOMINATIM_UA = 'FiveStarTap/1.0 (self-hosted NFC review-tag territory map)';
 
-function throttleNominatim(fn) {
-  const run = async () => {
-    const wait = 1100 - (Date.now() - lastNominatim);
-    if (wait > 0) await new Promise(r => setTimeout(r, wait));
-    lastNominatim = Date.now();
-    return fn();
-  };
-  const next = nominatimChain.then(run, run);
-  // Keep the chain alive even if this call rejects.
-  nominatimChain = next.catch(() => {});
-  return next;
+/**
+ * Wait until at least a second has passed since the last Nominatim call
+ * anywhere in the deployment. The timestamp lives in the meta table.
+ */
+async function paceNominatim(db) {
+  if (!db) return;
+  try {
+    const row = await db.prepare("SELECT value FROM meta WHERE key = 'last_nominatim'").first();
+    const last = row ? Number(row.value) : 0;
+    const wait = 1100 - (Date.now() - last);
+    if (wait > 0 && wait < 5000) await new Promise(r => setTimeout(r, wait));
+    await db.prepare(
+      `INSERT INTO meta (key, value) VALUES ('last_nominatim', ?)
+       ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+    ).bind(String(Date.now())).run();
+  } catch {
+    // Pacing is best-effort; never fail a lookup because of it.
+  }
 }
 
 async function fetchWithTimeout(url, options = {}, ms = 12000) {
@@ -156,12 +164,13 @@ function parseHtml(html) {
 
 /* ---------- geocoding (OpenStreetMap Nominatim, no key) ---------- */
 
-export async function geocode(query) {
+export async function geocode(query, db) {
   if (!query) return null;
+  await paceNominatim(db);
   const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&addressdetails=1&q='
     + encodeURIComponent(query);
-  const res = await throttleNominatim(() =>
-    fetchWithTimeout(url, { headers: { 'User-Agent': NOMINATIM_UA, 'Accept-Language': 'en' } }));
+  const res = await fetchWithTimeout(url,
+    { headers: { 'User-Agent': NOMINATIM_UA, 'Accept-Language': 'en' } });
   if (!res.ok) return null;
   const hits = await res.json();
   const hit = Array.isArray(hits) ? hits[0] : null;
@@ -169,10 +178,11 @@ export async function geocode(query) {
   return { lat: parseFloat(hit.lat), lng: parseFloat(hit.lon), address: hit.display_name };
 }
 
-export async function reverseGeocode(lat, lng) {
+export async function reverseGeocode(lat, lng, db) {
+  await paceNominatim(db);
   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${lat}&lon=${lng}`;
-  const res = await throttleNominatim(() =>
-    fetchWithTimeout(url, { headers: { 'User-Agent': NOMINATIM_UA, 'Accept-Language': 'en' } }));
+  const res = await fetchWithTimeout(url,
+    { headers: { 'User-Agent': NOMINATIM_UA, 'Accept-Language': 'en' } });
   if (!res.ok) return null;
   const hit = await res.json();
   if (!hit || hit.error) return null;
@@ -190,7 +200,7 @@ export async function reverseGeocode(lat, lng) {
 
 const isUrl = s => /^https?:\/\//i.test(s.trim());
 
-export async function resolvePlace(input) {
+export async function resolvePlace(input, db) {
   const raw = String(input || '').trim();
   if (!raw) throw new Error('Paste a Google link or an address.');
 
@@ -229,7 +239,7 @@ export async function resolvePlace(input) {
     if (result.lat == null) {
       const q = [result.name, fromUrl.query, result.address].filter(Boolean).join(', ');
       if (q) {
-        const geo = await geocode(q).catch(() => null);
+        const geo = await geocode(q, db).catch(() => null);
         if (geo) {
           result.lat = geo.lat; result.lng = geo.lng;
           if (!result.address) result.address = geo.address;
@@ -241,7 +251,7 @@ export async function resolvePlace(input) {
       throw new Error('That link did not contain a business. Use "Share > Copy link" on the Google listing, or type the address instead.');
     }
   } else {
-    const geo = await geocode(raw);
+    const geo = await geocode(raw, db);
     if (!geo) throw new Error(`No match for "${raw}". Try adding the city or ZIP code.`);
     result.lat = geo.lat; result.lng = geo.lng;
     result.address = geo.address;
@@ -250,7 +260,7 @@ export async function resolvePlace(input) {
 
   // Fill an address in from the coordinates when Google gave us none.
   if (result.lat != null && !result.address) {
-    const rev = await reverseGeocode(result.lat, result.lng).catch(() => null);
+    const rev = await reverseGeocode(result.lat, result.lng, db).catch(() => null);
     if (rev) {
       result.address = rev.address;
       if (!result.name && rev.name) result.name = rev.name;

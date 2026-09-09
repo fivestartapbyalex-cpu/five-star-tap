@@ -1,19 +1,29 @@
 {
-  "name": "five-star",
+  "name": "five-star-tap",
   "version": "1.0.0",
   "private": true,
-  "description": "Territory map + CRM for an NFC review-tag sales team",
+  "description": "Marketing site + NFC review-tag territory map, on Cloudflare Workers + D1",
   "type": "module",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true});console.log('Wiped data/. The next start creates a fresh admin.')\""
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create fivestartap",
+    "db:init": "wrangler d1 execute fivestartap --local --file schema.sql",
+    "db:init:remote": "wrangler d1 execute fivestartap --remote --file schema.sql",
+    "create-admin": "node scripts/create-admin.mjs",
+    "dev:node": "node scripts/dev-node.mjs"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "hono": "^4.13.7"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^2.1.1",
+    "wrangler": "^4.130.0"
+  },
+  "allowScripts": {
+    "workerd@1.20250927.0": true
   }
 }

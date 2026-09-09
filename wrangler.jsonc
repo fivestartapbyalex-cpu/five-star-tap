@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "five-star-tap",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+
+  // The whole public/ folder is served straight from Cloudflare's edge.
+  // Anything that is not a file on disk falls through to the Worker, which is
+  // how /map, /team, /leads and every /api route get handled.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "none"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fivestartap",
+      // Filled in by `npx wrangler d1 create fivestartap`.
+      "database_id": "PLACEHOLDER_RUN_D1_CREATE"
+    }
+  ],
+
+  "vars": {
+    "BRAND_NAME": "Five Star Tap",
+    // Where the map opens before there are any pins to fit:
+    // Westchester / Fairfield / the lower Hudson Valley.
+    "MAP_LAT": "41.20",
+    "MAP_LNG": "-73.70",
+    "MAP_ZOOM": "10"
+  },
+
+  "observability": { "enabled": true }
+}
