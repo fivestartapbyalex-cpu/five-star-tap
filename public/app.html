@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Map · Five Star Tap</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d1d1f'/%3E%3Cpath d='M16 6l2.9 6.2 6.7.87-4.95 4.66 1.29 6.7L16 21.2l-5.94 3.23 1.29-6.7L6.4 13.07l6.7-.87z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/vendor/leaflet.css">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <button class="icon-btn" id="rail-toggle" aria-label="Show list" hidden></button>
+
+    <a class="brand" href="/map">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+      </span>
+      <span class="name hide-sm">Five Star<span>&nbsp;Tap</span></span>
+    </a>
+
+    <div class="searchbox">
+      <label class="sr-only" for="search">Search locations</label>
+      <input type="search" id="search" placeholder="Search name or address" autocomplete="off">
+    </div>
+
+    <div class="spacer"></div>
+
+    <button class="btn btn-primary" id="add-btn">
+      <span aria-hidden="true" style="font-size:15px;line-height:1">+</span>
+      <span class="hide-sm">Add location</span>
+    </button>
+
+    <div class="menu-wrap">
+      <button class="avatar" id="user-btn" aria-haspopup="true" aria-expanded="false" aria-label="Account"></button>
+      <div class="menu" id="user-menu" hidden></div>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <aside class="rail" id="rail">
+      <div class="rail-top">
+        <div class="stat-row" id="stats"></div>
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="rail-list scroll" id="list"></div>
+    </aside>
+
+    <div class="map-wrap">
+      <div id="map"></div>
+
+      <div class="map-hint" id="hint" hidden>
+        <span id="hint-text"></span>
+        <button class="btn btn-sm" id="hint-cancel">Cancel</button>
+      </div>
+
+      <div class="map-tools">
+        <button class="icon-btn" id="locate-btn" aria-pressed="false" title="Show my location" aria-label="Show my location"></button>
+        <button class="icon-btn" id="fit-btn" title="Fit all pins" aria-label="Fit all pins"></button>
+        <button class="icon-btn" id="theme-btn" title="Switch theme" aria-label="Switch theme"></button>
+      </div>
+
+      <aside class="drawer" id="drawer" hidden aria-label="Location detail"></aside>
+    </div>
+
+  </div>
+</div>
+
+<div class="overlay" id="overlay" hidden></div>
+
+<script src="/vendor/leaflet.js"></script>
+<script src="/js/app.js" type="module"></script>
+</body>
+</html>

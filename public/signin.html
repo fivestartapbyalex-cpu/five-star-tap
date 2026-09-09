@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in · Five Star Tap</title>
+<meta name="description" content="Territory map and account notes for the Five Star field team.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d1d1f'/%3E%3Cpath d='M16 6l2.9 6.2 6.7.87-4.95 4.66 1.29 6.7L16 21.2l-5.94 3.23 1.29-6.7L6.4 13.07l6.7-.87z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<main class="auth">
+  <section class="auth-art">
+    <a class="brand" href="/">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+      </span>
+      <span class="name">Five Star<span>&nbsp;Tap</span></span>
+    </a>
+
+    <div>
+      <h1>Every tag on the map.</h1>
+      <p class="lede">
+        Drop a Google listing, and the business lands on the shared map with its
+        address, its owner and every note the team has taken.
+      </p>
+    </div>
+
+    <div class="auth-marks">
+      <div><strong>One map</strong>The whole territory</div>
+      <div><strong>One tap</strong>Paste a Google link</div>
+      <div><strong>One truth</strong>Notes everyone can edit</div>
+    </div>
+  </section>
+
+  <section class="auth-pane">
+    <div class="auth-card">
+      <h2>Sign in</h2>
+      <p class="sub">Use the account details Alex set up for you.</p>
+
+      <form id="form" novalidate>
+        <div class="msg msg-error" id="err" role="alert" hidden></div>
+
+        <label class="field">
+          <span class="label">Email</span>
+          <input type="email" id="email" name="email" autocomplete="username"
+                 required autofocus placeholder="you@company.com">
+        </label>
+
+        <label class="field">
+          <span class="label">Password</span>
+          <input type="password" id="password" name="password"
+                 autocomplete="current-password" required placeholder="••••••••">
+        </label>
+
+        <button class="btn btn-primary btn-lg btn-block" id="submit" type="submit">Sign in</button>
+      </form>
+
+      <p class="auth-foot">
+        Reps get their login from Alex. Forgotten it? Ask him to reset it from
+        the Team page — it takes a second.
+      </p>
+    </div>
+  </section>
+</main>
+
+<script src="/js/signin.js" type="module"></script>
+</body>
+</html>

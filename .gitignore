@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# The database. Contains password hashes and the session-signing secret --
+# it must never reach a git repo, public or private.
+data/
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Local environment
+.env
+.env.local

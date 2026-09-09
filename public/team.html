@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team · Five Star Tap</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d1d1f'/%3E%3Cpath d='M16 6l2.9 6.2 6.7.87-4.95 4.66 1.29 6.7L16 21.2l-5.94 3.23 1.29-6.7L6.4 13.07l6.7-.87z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<header class="header">
+  <a class="brand" href="/map">
+    <span class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+    </span>
+    <span class="name">Five Star<span>&nbsp;Tap</span></span>
+  </a>
+  <div class="spacer"></div>
+  <a class="btn" href="/map">Back to map</a>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <h1>Team</h1>
+    <p>
+      Every rep gets their own login and a color. That color is how their pins
+      read on the shared map, so give each person something distinct.
+    </p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Accounts</h2>
+      <button class="btn btn-primary btn-sm" id="new-btn">Add a rep</button>
+    </div>
+    <div id="users"></div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay" hidden></div>
+
+<script src="/js/team.js" type="module"></script>
+</body>
+</html>
