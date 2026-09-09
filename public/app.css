@@ -43,6 +43,17 @@
 
   --header-h: 56px;
   --rail-w: 360px;
+
+  /* Layer scale. Leaflet positions its own panes from 400 to 700 and they
+     must stay below our chrome, so everything here clears 800. .body owns a
+     stacking context (below) which keeps Leaflet's numbers from leaking into
+     the root and competing with these. */
+  --z-map-tools: 500;
+  --z-rail:      900;
+  --z-drawer:    950;
+  --z-header:   1000;
+  --z-overlay:  1100;
+  --z-toast:    1200;
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
 
   color-scheme: light;
@@ -237,7 +248,11 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--line);
-  z-index: 60;
+  /* Positioned so the z-index is unconditional rather than relying on
+     flex-item behaviour, and high enough that the account menu hanging below
+     the header is not painted over by the map. */
+  position: relative;
+  z-index: var(--z-header);
 }
 
 .brand { display: flex; align-items: center; gap: 9px; color: var(--text); }
@@ -291,7 +306,14 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
 .menu-item svg { width: 15px; height: 15px; color: var(--muted); flex: none; }
 .menu-sep { height: 1px; margin: 5px 0; background: var(--line); }
 
-.body { display: flex; flex: 1; min-height: 0; position: relative; }
+.body {
+  display: flex; flex: 1; min-height: 0;
+  /* position alone is not enough: without an explicit z-index this element
+     forms no stacking context, and Leaflet's pane z-indexes (400-700) then
+     compete directly with the header. */
+  position: relative;
+  z-index: 0;
+}
 
 /* ==========================================================================
    Rail
@@ -301,7 +323,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
   display: flex; flex-direction: column;
   width: var(--rail-w); flex: 0 0 var(--rail-w); min-height: 0;
   background: var(--surface); border-right: 1px solid var(--line);
-  z-index: 40;
+  z-index: var(--z-rail);
 }
 
 .rail-top { padding: 14px 16px 12px; border-bottom: 1px solid var(--line); }
@@ -377,7 +399,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
 #map { position: absolute; inset: 0; background: var(--bg); }
 
 .map-tools {
-  position: absolute; top: 14px; right: 14px; z-index: 500;
+  position: absolute; top: 14px; right: 14px; z-index: var(--z-map-tools);
   display: flex; flex-direction: column; gap: 6px;
 }
 .map-tools .icon-btn {
@@ -392,7 +414,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
 
 .map-hint {
   position: absolute; left: 50%; top: 14px; transform: translateX(-50%);
-  z-index: 500; display: flex; align-items: center; gap: 10px;
+  z-index: var(--z-map-tools); display: flex; align-items: center; gap: 10px;
   padding: 8px 10px 8px 14px; max-width: min(560px, calc(100% - 28px));
   font-size: 13px; color: var(--text);
   background: var(--scrim);
@@ -469,7 +491,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
   position: absolute; top: 0; right: 0; bottom: 0; width: 420px; max-width: 100%;
   display: flex; flex-direction: column;
   background: var(--surface); border-left: 1px solid var(--line);
-  box-shadow: var(--sh-3); z-index: 600;
+  box-shadow: var(--sh-3); z-index: var(--z-drawer);
   transform: translateX(100%); transition: transform .34s var(--ease);
 }
 .drawer.open { transform: none; }
@@ -540,7 +562,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
    ========================================================================== */
 
 .overlay {
-  position: fixed; inset: 0; z-index: 900;
+  position: fixed; inset: 0; z-index: var(--z-overlay);
   display: grid; place-items: center; padding: 20px;
   background: rgba(0, 0, 0, 0.38);
   -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
@@ -601,7 +623,7 @@ input::placeholder, textarea::placeholder { color: var(--faint); }
 
 .toast-host {
   position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
-  z-index: 1000; display: flex; flex-direction: column; gap: 7px; align-items: center;
+  z-index: var(--z-toast); display: flex; flex-direction: column; gap: 7px; align-items: center;
   pointer-events: none;
 }
 .toast {
