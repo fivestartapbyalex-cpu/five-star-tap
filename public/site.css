@@ -520,14 +520,12 @@ body.site-body { background: var(--surface); }
 }
 .product-shot {
   display: grid; place-items: center;
-  aspect-ratio: 4 / 3;
-  background: var(--surface-2);
+  /* Square, because the product shots are square: cover then crops nothing. */
+  aspect-ratio: 1 / 1;
+  background: #fff;
   border-bottom: 1px solid var(--line);
 }
-/* Drop a real photo in and it fills the frame; the placeholder art below is
-   only what shows until then. */
 .product-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.product-shot svg { width: 44%; height: 44%; color: var(--line-2); }
 .product-text { padding: 15px 16px 17px; }
 .product-text h3 { font-size: 14.5px; letter-spacing: -0.015em; margin-bottom: 5px; }
 .product-text p { font-size: 13px; line-height: 1.5; color: var(--muted); }
@@ -582,3 +580,21 @@ body.site-body { background: var(--surface); }
 .mix-note {
   margin-top: 18px; font-size: 13.5px; color: var(--muted); line-height: 1.55;
 }
+
+/* ==========================================================================
+   Products in use
+   ========================================================================== */
+
+.inuse {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-top: 26px;
+}
+.inuse figure { margin: 0; }
+.inuse img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--line-2); border-radius: var(--r-lg);
+}
+.inuse figcaption {
+  margin-top: 11px; font-size: 13px; line-height: 1.5; color: var(--muted);
+}
+@media (max-width: 700px) { .inuse { grid-template-columns: 1fr; gap: 24px; } }
