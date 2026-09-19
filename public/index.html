@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Five Star Tap — NFC review tags for local business</title>
-<meta name="description" content="A tap-to-review tag for your counter. Customers tap their phone, your Google review page opens, and the review takes seconds. No app, no QR code, no awkward asking.">
-<meta property="og:title" content="Five Star Tap — NFC review tags for local business">
-<meta property="og:description" content="A tap-to-review tag for your counter. Customers tap, your Google review page opens, the review takes seconds.">
+<title>Five Star Tap — NFC tags for local business</title>
+<meta name="description" content="One tap opens your Google reviews, your menu or your Instagram. No app, no QR code, no typing. $40 a tag, free shipping anywhere in the US.">
+<meta property="og:title" content="Five Star Tap — NFC tags for local business">
+<meta property="og:description" content="One tap opens your Google reviews, your menu or your Instagram. No app, no QR code, no typing.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d1d1f'/%3E%3Cpath d='M16 6l2.9 6.2 6.7.87-4.95 4.66 1.29 6.7L16 21.2l-5.94 3.23 1.29-6.7L6.4 13.07l6.7-.87z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/app.css">
@@ -27,13 +27,14 @@
 
   <div class="nav-links" id="nav-links">
     <a href="#how">How it works</a>
-    <a href="#included">What you get</a>
+    <a href="#range">What we make</a>
+    <a href="#story">Our story</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </div>
 
-  <a class="btn btn-primary cta-sm" href="#contact">Get your tags</a>
+  <a class="btn btn-primary cta-sm" href="#contact">Order tags</a>
   <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"></button>
 </nav>
 
@@ -42,19 +43,19 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <h1>More five-star reviews. One tap.</h1>
+        <h1>Reviews. Menus. Followers. One&nbsp;tap.</h1>
         <p class="lede">
-          A small tag on your counter. A customer taps their phone against it,
-          your Google review page opens, and they are done in seconds — while
-          they are still standing in front of you, still happy.
+          A small tag on your counter. A customer holds their phone near it and
+          the page opens — your Google reviews, your menu, your Instagram.
+          No app, no QR code, nothing to type.
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" href="#contact">Get your tags</a>
+          <a class="btn btn-primary btn-lg" href="#contact">Order tags</a>
           <a class="btn btn-lg btn-quiet" href="#how">See how it works</a>
         </div>
 
-        <p class="hero-note">Set up for you, ready to use out of the box.</p>
+        <p class="hero-note">$40 a tag. Free shipping anywhere in the US.</p>
 
         <div class="hero-stats">
           <div><strong>No app</strong>Nothing for your customer to install</div>
@@ -64,24 +65,77 @@
       </div>
 
       <div class="hero-visual">
-        <!-- The product, drawn rather than photographed. -->
-        <div class="nfctag" role="img" aria-label="An NFC review tag showing five stars and a tap symbol">
-          <div class="nfctag-inner">
-            <div class="nfctag-stars" aria-hidden="true">
+        <!-- Three scenarios on one loop. Whatever the card says is what the
+             phone opens: review card -> review page, menu card -> menu, and
+             so on. Platform names are plain text, never logo artwork. -->
+        <div class="tapscene" role="img"
+             aria-label="A phone tapping an NFC tag. The tag reads tap to review us and the phone opens a Google review page; then tap for our menu and the phone opens a menu; then tap to follow us and the phone opens an Instagram profile.">
+          <div class="tapscene-surface" aria-hidden="true"></div>
+
+          <div class="tapscene-card" aria-hidden="true">
+            <div class="stars">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
             </div>
-            <svg class="nfctag-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <path d="M7 8.5a6 6 0 0 1 0 7"/>
-              <path d="M11 6a10 10 0 0 1 0 12"/>
-              <path d="M15 3.5a14 14 0 0 1 0 17"/>
+            <div class="label s1">Tap to review us</div>
+            <div class="label s2">Tap for our menu</div>
+            <div class="label s3">Tap to follow us</div>
+            <svg class="nfcmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M8 9.5a5 5 0 0 1 0 5"/><path d="M11.6 7a9 9 0 0 1 0 10"/><path d="M15.2 4.5a13 13 0 0 1 0 15"/>
             </svg>
-            <div>
-              <div class="nfctag-word">Tap to review us</div>
-              <div class="nfctag-sub">Five Star Tap</div>
+          </div>
+
+          <div class="tapscene-ripple" aria-hidden="true"></div>
+          <div class="tapscene-ripple two" aria-hidden="true"></div>
+
+          <div class="tapscene-phone" aria-hidden="true">
+            <div class="tapscene-screen">
+
+              <!-- 1. review -->
+              <div class="tapscene-view s1">
+                <div class="tapscene-bar">Google</div>
+                <div class="tapscene-body">
+                  <div class="ts-stars">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.75 5.9 6.35.82-4.7 4.42 1.22 6.36L12 16.98 6.38 20.1l1.22-6.36-4.7-4.42 6.35-.82z"/></svg>
+                  </div>
+                  <div class="ts-line"></div>
+                  <div class="ts-line short"></div>
+                  <div class="ts-btn">Post</div>
+                </div>
+              </div>
+
+              <!-- 2. menu -->
+              <div class="tapscene-view s2">
+                <div class="tapscene-bar">Menu</div>
+                <div class="tapscene-body" style="gap:0">
+                  <div class="ts-row"><span>Appetizers</span><span>›</span></div>
+                  <div class="ts-row"><span>Entrées</span><span>›</span></div>
+                  <div class="ts-row"><span>Sides</span><span>›</span></div>
+                  <div class="ts-row"><span>Desserts</span><span>›</span></div>
+                  <div class="ts-row"><span>Drinks</span><span>›</span></div>
+                </div>
+              </div>
+
+              <!-- 3. follow -->
+              <div class="tapscene-view s3">
+                <div class="tapscene-bar">Instagram</div>
+                <div class="tapscene-body">
+                  <div class="ts-avatar"></div>
+                  <div class="ts-line short" style="margin:0 auto"></div>
+                  <div class="ts-btn" style="margin-top:0">Follow</div>
+                  <div class="ts-grid">
+                    <i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -95,11 +149,12 @@
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Why it matters</span>
-      <h2>Your next customer reads your reviews first.</h2>
+      <h2>The moment passes in about four seconds.</h2>
       <p class="deck">
-        People choose where to eat, who to book and who to trust by looking at
-        a list of stars on a map. The businesses at the top are rarely the best
-        ones — they are the ones that asked.
+        A customer is happiest right after you have served them, standing at
+        your counter with their phone already in their hand. That is the only
+        moment they will ever leave you a review, look at tonight's specials,
+        or follow you. Then they walk out.
       </p>
     </div>
 
@@ -113,7 +168,7 @@
         </p>
         <p>
           A tag removes every one of those steps. Hold a phone near it and the
-          review page is already open.
+          page is already open.
         </p>
       </div>
 
@@ -127,7 +182,7 @@
             <div class="t"><b>A QR code on a card</b><span>Open camera · aim · tap the banner · wait</span></div>
           </div>
           <div class="mini-row" style="--c:var(--ok)">
-            <div class="t"><b>Tap the tag</b><span>Review page opens. That is the whole thing.</span></div>
+            <div class="t"><b>Tap the tag</b><span>The page opens. That is the whole thing.</span></div>
           </div>
         </div>
       </div>
@@ -146,11 +201,11 @@
     <div class="steps reveal">
       <div class="step">
         <div class="n">1</div>
-        <h3>We set it up</h3>
+        <h3>Send us your link</h3>
         <p>
-          We find your Google listing, program the tag to open your review page
-          directly, and test it on both an iPhone and an Android before it
-          reaches you.
+          Your Google review page, your menu, your Instagram — whichever you
+          want the tag to open. We program it, test it on an iPhone and an
+          Android, and ship it within two days.
         </p>
       </div>
       <div class="step">
@@ -158,15 +213,15 @@
         <h3>You put it down</h3>
         <p>
           On the counter, by the card machine, on the table, at reception —
-          wherever a happy customer already pauses. It sticks down and needs no
-          power.
+          wherever a happy customer already pauses. It needs no power and no
+          wifi.
         </p>
       </div>
       <div class="step">
         <div class="n">3</div>
         <h3>They tap</h3>
         <p>
-          The phone opens your review page. No app to install, nothing to type,
+          The phone opens your page. No app to install, nothing to type,
           nothing to scan. Most people are finished before they have put their
           coat on.
         </p>
@@ -176,65 +231,69 @@
 </section>
 
 <!-- ====================================================================== -->
-<section class="section" id="included">
+<section class="section" id="range">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">What you get</span>
-      <h2>A tag that works on day one.</h2>
+      <span class="eyebrow">What we make</span>
+      <h2>One tag, five shapes.</h2>
       <p class="deck">
-        The hard part of these is the setup — finding the right link, encoding
-        it, and checking it behaves on every phone. That is the part we do.
+        Same chip, same setup, same price — pick whichever suits the room.
+        Every one arrives programmed to your link and ready to use.
       </p>
     </div>
 
-    <div class="split reveal">
-      <div class="split-text">
-        <h3>Made for your business, not a generic sticker.</h3>
-        <p>
-          Each tag is programmed to your own Google listing, so a tap lands on
-          your review box — not a search page the customer has to work through.
-        </p>
-        <ul class="ticks">
-          <li>Your Google review page, linked directly</li>
-          <li>Your business name printed on the tag</li>
-          <li>Hard-wearing, wipe-clean, made to live on a counter</li>
-          <li>Tested on iPhone and Android before delivery</li>
-          <li>Stands, stickers or cards, whichever suits the room</li>
-        </ul>
-      </div>
-
-      <div class="frame" aria-hidden="true">
-        <div class="frame-bar"><i></i><i></i><i></i><span>Where they go</span></div>
-        <div class="frame-body">
-          <div class="mini-row" style="--c:#0071e3"><div class="t"><b>Counter stand</b><span>Cafés, bars, takeaways</span></div></div>
-          <div class="mini-row" style="--c:#bf5af2"><div class="t"><b>Reception sticker</b><span>Salons, clinics, garages</span></div></div>
-          <div class="mini-row" style="--c:#ff9500"><div class="t"><b>Table tag</b><span>Restaurants and pubs</span></div></div>
-          <div class="mini-row" style="--c:#30b0c7"><div class="t"><b>Pocket card</b><span>Trades and mobile services</span></div></div>
+    <div class="range reveal">
+      <!-- PHOTOS: replace each .product-shot's <svg> with
+           <img src="/img/<name>.jpg" alt="..."> once the shots are in. -->
+      <div class="product">
+        <div class="product-shot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="3"/><path d="M8 15h8"/></svg>
+        </div>
+        <div class="product-text">
+          <h3>Cards</h3>
+          <p>Pocket-sized and hard-wearing. Hand one over, leave one by the till, keep a few in an apron.</p>
         </div>
       </div>
-    </div>
 
-    <div class="split flip reveal">
-      <div class="split-text">
-        <h3>We come back and check it is being used.</h3>
-        <p>
-          A tag in a drawer does nothing. We keep track of every business we set
-          up, so we can drop in, make sure it is somewhere customers see it, and
-          move it if it is not working where it is.
-        </p>
-        <ul class="ticks">
-          <li>A quick check-in after the first couple of weeks</li>
-          <li>Free replacement if a tag is damaged or stops reading</li>
-          <li>Re-programmed free if your listing changes</li>
-        </ul>
+      <div class="product">
+        <div class="product-shot">
+          <img src="/img/keychain.jpg" width="1000" height="1000" loading="lazy" decoding="async"
+               alt="A stallholder holding out an NFC keychain as a customer taps their phone against it.">
+        </div>
+        <div class="product-text">
+          <h3>Keychains</h3>
+          <p>Clip it to a lanyard or a bag. Good for market stalls, trades and anyone who works away from a counter.</p>
+        </div>
       </div>
 
-      <div class="frame" aria-hidden="true">
-        <div class="frame-bar"><i></i><i></i><i></i><span>Our coverage map</span></div>
-        <div class="frame-body">
-          <div class="mini-row" style="--c:#30d158"><div class="t"><b>Installed</b><span>Tag in place and being tapped</span></div></div>
-          <div class="mini-row" style="--c:#ff9f0a"><div class="t"><b>Visited</b><span>Spoken to, deciding</span></div></div>
-          <div class="mini-row" style="--c:#8e8e93"><div class="t"><b>To visit</b><span>On the round for this week</span></div></div>
+      <div class="product">
+        <div class="product-shot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4h16v13l-4 3H4z"/><path d="M20 17h-4v3"/></svg>
+        </div>
+        <div class="product-text">
+          <h3>Stickers</h3>
+          <p>Sticks flat to a counter, a window or a card machine. The one that disappears into the room.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-shot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="6" y="3" width="12" height="14" rx="1.5"/><path d="M4 20h16M9 17l-1 3M15 17l1 3"/></svg>
+        </div>
+        <div class="product-text">
+          <h3>Counter stands</h3>
+          <p>Stands up on its own and stays visible. The one people notice without being told.</p>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-shot">
+          <img src="/img/menu-stand.jpg" width="1000" height="984" loading="lazy" decoding="async"
+               alt="A Tap to view our menu stand on a restaurant table, with a phone showing the menu beside it.">
+        </div>
+        <div class="product-text">
+          <h3>Menu stands</h3>
+          <p>Points at the menu you already have online. No reprinting when the specials change.</p>
         </div>
       </div>
     </div>
@@ -242,65 +301,118 @@
 </section>
 
 <!-- ====================================================================== -->
-<section class="section section-alt" id="pricing">
+<section class="section section-alt" id="story">
+  <div class="wrap">
+    <div class="story reveal">
+      <div>
+        <span class="eyebrow">Our story</span>
+        <h2 style="max-width:16ch">Started with a box of tags and a list of shops.</h2>
+        <p>
+          Five Star Tap began the way most small things do — one person, a box
+          of tags, and a lot of walking into businesses to explain what they
+          were for. Alex started it because he kept noticing the same gap:
+          owners who did great work, knew reviews mattered, and had no
+          comfortable way to ask.
+        </p>
+        <p>
+          It is still early. We are based in Putnam County, New York, and the
+          shops we know best are the ones around here, in Westchester and over
+          in Fairfield. But a tag works the same in Denver as it does in
+          Brewster, so we ship anywhere in the country and set it up for you
+          before it goes out.
+        </p>
+        <p>
+          That means when you email us, you are emailing the person who
+          programmed your tag. For now, that is the whole company — and we
+          think it shows in how quickly you get an answer.
+        </p>
+        <div class="signoff">
+          Alexander Cance
+          <span>Founder, Five Star Tap</span>
+        </div>
+      </div>
+
+      <div class="story-shot">
+        <img src="/img/alex.jpg" width="1400" height="788" loading="lazy" decoding="async"
+             alt="Alex showing a Review us tag to the owner of a coffee shop, across the counter.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<section class="section" id="pricing">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Pricing</span>
       <h2>Bought once. No subscription.</h2>
       <p class="deck">
-        You pay for the tags and the setup, and that is the end of it. There is
-        no monthly fee and nothing to cancel.
+        Every tag is $40, whichever shape you pick. Buy more than one and the
+        price comes down — and you can mix them however you like.
       </p>
     </div>
 
     <div class="tiers reveal">
-      
       <div class="tier">
         <h3>One tag</h3>
         <div class="price">$40<small> once</small></div>
-        <div class="price-note">For a single counter</div>
+        <div class="price-note">Any shape</div>
         <ul>
-          <li>One tag, programmed and tested</li>
-          <li>Your business name printed on</li>
-          <li>Stand, sticker or card</li>
+          <li>Programmed to your link and tested</li>
+          <li>Card, keychain, sticker, stand or menu stand</li>
+          <li>Free shipping</li>
           <li>Free replacement for 12 months</li>
         </ul>
-        <a class="btn btn-block" href="#contact">Get in touch</a>
+        <a class="btn btn-block" href="#contact">Order</a>
       </div>
 
       <div class="tier featured">
         <span class="badge">Most popular</span>
         <h3>Two tags</h3>
-        <div class="price">$60<small> once</small></div>
-        <div class="price-note">Save $20 on the pair</div>
+        <div class="price">$60<small class="was">$80</small></div>
+        <div class="price-note">Mix any two shapes</div>
         <ul>
-          <li>Two tags, programmed and tested</li>
-          <li>Mix of stands, stickers and cards</li>
-          <li>One for the counter, one where you need it</li>
-          <li>Placement advice when we drop them off</li>
+          <li>Two tags, each programmed separately</li>
+          <li>Point them at different things — reviews and your menu</li>
+          <li>Placement advice when they arrive</li>
+          <li>Free shipping</li>
           <li>Free replacement for 12 months</li>
         </ul>
-        <a class="btn btn-primary btn-block" href="#contact">Get in touch</a>
+        <a class="btn btn-primary btn-block" href="#contact">Order</a>
       </div>
 
       <div class="tier">
-        <h3>Three or more</h3>
-        <div class="price">Let's talk</div>
-        <div class="price-note">Bigger spaces and multiple locations</div>
+        <h3>Three tags</h3>
+        <div class="price">$75<small class="was">$120</small></div>
+        <div class="price-note">Mix any three shapes</div>
         <ul>
-          <li>A tag set for every location</li>
-          <li>Each site linked to its own listing</li>
-          <li>Delivered and set up site by site</li>
-          <li>One invoice for the group</li>
+          <li>Three tags, each programmed separately</li>
+          <li>Counter, table and pocket — or three locations</li>
+          <li>Placement advice when they arrive</li>
+          <li>Free shipping</li>
+          <li>Free replacement for 12 months</li>
         </ul>
-        <a class="btn btn-block" href="#contact">Get in touch</a>
+        <a class="btn btn-block" href="#contact">Order</a>
       </div>
+    </div>
+
+    <p class="mix-note reveal">
+      Mix and match freely — two tags is $60 whether that is two cards or a
+      card and a keychain. Need more than three, or kitting out several
+      locations? <a href="#contact">Get in touch</a> and we will sort it out.
+    </p>
+
+    <div class="ship-note reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>
+      </svg>
+      Free shipping on every order, anywhere in the United States. No minimum.
     </div>
   </div>
 </section>
 
 <!-- ====================================================================== -->
-<section class="section" id="faq">
+<section class="section section-alt" id="faq">
   <div class="wrap wrap-narrow">
     <div class="section-head reveal">
       <span class="eyebrow">Questions</span>
@@ -312,8 +424,8 @@
         <summary>Does my customer need an app?</summary>
         <div class="answer">
           No. Tapping a tag is built into the phone itself. On an iPhone the
-          review page appears as a banner to tap; on Android it usually opens
-          straight away.
+          page appears as a banner to tap; on Android it usually opens straight
+          away.
         </div>
       </details>
       <details>
@@ -321,25 +433,50 @@
         <div class="answer">
           Every iPhone from the XR onwards reads tags without unlocking
           anything, and effectively all Android phones sold in the last several
-          years do too. If a phone is very old, the tag simply does nothing —
+          years do too. If a phone is very old the tag simply does nothing —
           there is no error and no confusion.
+        </div>
+      </details>
+      <details>
+        <summary>Which platforms can a tag point at?</summary>
+        <div class="answer">
+          Google, Yelp, Instagram, Facebook, TikTok, WhatsApp and Snapchat, plus
+          your own menu or website. A tag holds one link at a time, so one tag
+          does one job — that is why most people start with two.
+        </div>
+      </details>
+      <details>
+        <summary>Do you print my business name on it?</summary>
+        <div class="answer">
+          Not as standard. The tags come pre-printed with clean artwork, and
+          what makes one yours is the link inside it. That is what keeps them
+          $40 and shipping in two days rather than two weeks. If you want
+          custom printing for a larger order, ask and we will quote it.
+        </div>
+      </details>
+      <details>
+        <summary>How long until it arrives?</summary>
+        <div class="answer">
+          Programmed and shipped within two days of your order, then normal
+          post from New York. It arrives ready to use — putting it on your
+          counter is the whole installation.
+        </div>
+      </details>
+      <details>
+        <summary>What if I move premises or change my listing?</summary>
+        <div class="answer">
+          Get in touch and we will re-program it free. Nothing is printed on
+          the tag, so it can be pointed somewhere new whenever you need — and
+          we can walk you through doing it yourself over the phone.
         </div>
       </details>
       <details>
         <summary>Can I choose which reviews I get?</summary>
         <div class="answer">
-          No, and neither can we. The tag opens your public Google review page,
-          and whatever the customer writes is theirs. Filtering or gating
-          reviews is against Google's policies and risks your listing. The tag
-          makes it easier to ask everyone — it does not choose who answers.
-        </div>
-      </details>
-      <details>
-        <summary>What if I move premises or rebrand?</summary>
-        <div class="answer">
-          Get in touch and we will re-program your tags to the new listing
-          free of charge. The tag is not printed with the link, so it can be
-          pointed somewhere new whenever you need.
+          No, and neither can we. The tag opens your public review page, and
+          whatever the customer writes is theirs. Filtering or gating reviews
+          is against Google's policies and risks your listing. The tag makes it
+          easier to ask everyone — it does not choose who answers.
         </div>
       </details>
       <details>
@@ -349,31 +486,23 @@
           phone powers it for the instant it is held nearby. You buy it once.
         </div>
       </details>
-      <details>
-        <summary>How long does setup take?</summary>
-        <div class="answer">
-          The tags arrive ready to use. Putting one on your counter is the whole
-          installation, and we will do it with you if we are dropping them off
-          in person.
-        </div>
-      </details>
     </div>
   </div>
 </section>
 
 <!-- ====================================================================== -->
-<section class="section section-alt" id="contact">
+<section class="section" id="contact">
   <div class="wrap">
     <div class="contact">
       <div class="contact-aside reveal">
         <span class="eyebrow">Get in touch</span>
-        <h2>Let's get you set up.</h2>
+        <h2>Order, or just ask.</h2>
         <p class="deck">
-          Tell us what your business is and where, and we will come back with
-          what we would recommend and what it costs. No obligation.
+          Tell us what your business is and what you want the tag to open, and
+          we will come back with what we would recommend. No obligation, and no
+          sales call unless you want one.
         </p>
 
-        
         <dl>
           <div>
             <dt>Email</dt>
@@ -384,8 +513,8 @@
             <dd><a href="tel:+17155055838">(715) 505-5838</a></dd>
           </div>
           <div>
-            <dt>Where we cover</dt>
-            <dd>Westchester, Fairfield and the Hudson Valley</dd>
+            <dt>Where we are</dt>
+            <dd>Putnam County, New York — shipping nationwide</dd>
           </div>
         </dl>
       </div>
@@ -415,7 +544,7 @@
             <label class="field full">
               <span class="label">What do you need?</span>
               <textarea id="f-message" name="message" required
-                placeholder="Coffee shop in Rye — one tag for the counter, maybe a couple for the tables."></textarea>
+                placeholder="Coffee shop in Brewster — two tags, one for Google reviews on the counter and one for our Instagram."></textarea>
             </label>
           </div>
 
@@ -424,9 +553,9 @@
             <label>Website<input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"></label>
           </div>
 
-          <button class="btn btn-primary btn-lg btn-block" id="f-submit" type="submit">Send inquiry</button>
+          <button class="btn btn-primary btn-lg btn-block" id="f-submit" type="submit">Send</button>
           <p class="hint" style="margin-top:12px">
-            We use your details to reply to this inquiry and nothing else.
+            We use your details to reply to this message and nothing else.
           </p>
         </form>
       </div>
@@ -445,7 +574,7 @@
     </a>
 
     <div class="foot-grid">
-      <span>&copy; <span id="year">2026</span> Five Star Tap</span>
+      <span>&copy; <span id="year">2026</span> Five Star Tap · Putnam County, NY</span>
       <div class="spacer"></div>
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
