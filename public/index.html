@@ -8,6 +8,11 @@
 <meta property="og:title" content="Five Star Tap — NFC tags for local business">
 <meta property="og:description" content="One tap opens your Google reviews, your menu or your Instagram. No app, no QR code, no typing.">
 <meta property="og:type" content="website">
+<!-- Static assets are served at the edge before the Worker runs, so the
+     Worker's workers.dev redirect never fires for this page. The canonical
+     tag is what actually stops the preview and workers.dev hosts being
+     treated as duplicates of the live site. -->
+<link rel="canonical" href="https://getfivestartap.com/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231d1d1f'/%3E%3Cpath d='M16 6l2.9 6.2 6.7.87-4.95 4.66 1.29 6.7L16 21.2l-5.94 3.23 1.29-6.7L6.4 13.07l6.7-.87z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/app.css">
 <link rel="stylesheet" href="/site.css">
@@ -70,7 +75,82 @@
              so on. Platform names are plain text, never logo artwork. -->
         <div class="tapscene" role="img"
              aria-label="A phone tapping an NFC tag. The tag reads tap to review us and the phone opens a Google review page; then tap for our menu and the phone opens a menu; then tap to follow us and the phone opens an Instagram profile.">
-          <div class="tapscene-surface" aria-hidden="true"></div>
+          <!-- The room, drawn flat so it reads at any size. Everything sits
+               in the left two thirds and the top strip, which is what stays
+               visible once the card and phone are in front of it. -->
+          <svg class="tapscene-scene" viewBox="0 0 400 400" aria-hidden="true">
+            <defs>
+              <linearGradient id="ts-wall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".085"/>
+                <stop offset="1" stop-color="#ffffff" stop-opacity=".02"/>
+              </linearGradient>
+              <linearGradient id="ts-counter" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#7d5e45"/>
+                <stop offset="1" stop-color="#3d2d22"/>
+              </linearGradient>
+              <radialGradient id="ts-glow" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#ffb648" stop-opacity=".46"/>
+                <stop offset="1" stop-color="#ffb648" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <rect x="0" y="0" width="400" height="312" fill="url(#ts-wall)"/>
+
+            <!-- pendant lamp, centred in the gap above the card -->
+            <ellipse cx="206" cy="112" rx="66" ry="64" fill="url(#ts-glow)"/>
+            <path d="M206 0v50" stroke="#f5f5f7" stroke-opacity=".28" stroke-width="1.6"/>
+            <path d="M186 78h40l-9-26h-22z" fill="#f5f5f7" fill-opacity=".24"/>
+            <ellipse cx="206" cy="78" rx="20" ry="3.6" fill="#ffd79a" fill-opacity=".62"/>
+
+            <!-- back shelf with jars -->
+            <rect x="18" y="110" width="148" height="4" rx="2" fill="#f5f5f7" fill-opacity=".2"/>
+            <g fill="#f5f5f7" fill-opacity=".15">
+              <rect x="32" y="80" width="20" height="30" rx="3"/>
+              <rect x="60" y="72" width="16" height="38" rx="3"/>
+              <rect x="84" y="86" width="22" height="24" rx="3"/>
+              <rect x="114" y="76" width="14" height="34" rx="3"/>
+              <rect x="136" y="88" width="18" height="22" rx="3"/>
+            </g>
+            <g fill="#f5f5f7" fill-opacity=".24">
+              <rect x="32" y="80" width="20" height="5" rx="2"/>
+              <rect x="60" y="72" width="16" height="5" rx="2"/>
+              <rect x="114" y="76" width="14" height="5" rx="2"/>
+            </g>
+
+            <!-- chalkboard -->
+            <rect x="22" y="150" width="62" height="46" rx="3"
+                  fill="#f5f5f7" fill-opacity=".05" stroke="#f5f5f7" stroke-opacity=".18"/>
+            <g fill="#f5f5f7" fill-opacity=".2">
+              <rect x="30" y="160" width="40" height="3.5" rx="1.75"/>
+              <rect x="30" y="170" width="46" height="3.5" rx="1.75"/>
+              <rect x="30" y="180" width="28" height="3.5" rx="1.75"/>
+            </g>
+
+            <!-- counter -->
+            <rect x="0" y="312" width="400" height="88" fill="url(#ts-counter)"/>
+            <rect x="0" y="309" width="400" height="4" fill="#d8ab7e" fill-opacity=".6"/>
+            <rect x="0" y="332" width="400" height="1" fill="#000" fill-opacity=".2"/>
+
+            <!-- cup and saucer, left of the card -->
+            <g transform="translate(12 272)">
+              <path d="M2 10h28v13a9 9 0 0 1-9 9H11a9 9 0 0 1-9-9z" fill="#f5f5f7" fill-opacity=".82"/>
+              <path d="M30 13h5a5 5 0 0 1 0 10h-5" fill="none" stroke="#f5f5f7" stroke-opacity=".82" stroke-width="2.4"/>
+              <ellipse cx="16" cy="35" rx="22" ry="4.5" fill="#f5f5f7" fill-opacity=".38"/>
+              <g stroke="#f5f5f7" stroke-opacity=".3" stroke-width="1.8" fill="none" stroke-linecap="round">
+                <path d="M9 2c3-3 0-5 0-7"/><path d="M17 1c3-3 0-5 0-7"/>
+              </g>
+            </g>
+
+            <!-- plant, in the gap between the card and the phone -->
+            <g transform="translate(184 240)">
+              <g fill="#7fb08a" fill-opacity=".52">
+                <ellipse cx="12" cy="20" rx="6.5" ry="15" transform="rotate(-28 12 20)"/>
+                <ellipse cx="28" cy="18" rx="6.5" ry="16" transform="rotate(20 28 18)"/>
+                <ellipse cx="20" cy="9" rx="6" ry="15"/>
+              </g>
+              <path d="M7 42h26l-4 30H11z" fill="#f5f5f7" fill-opacity=".24"/>
+            </g>
+          </svg>
 
           <div class="tapscene-card" aria-hidden="true">
             <div class="stars">

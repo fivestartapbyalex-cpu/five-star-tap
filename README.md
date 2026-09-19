@@ -276,6 +276,39 @@ Settings → Domains & Routes → Add custom domain). If the domain is registere
 at Cloudflare, DNS and the TLS certificate are handled automatically — there
 are no records to add by hand.
 
+### Previewing before you go live
+
+Nothing has to reach the live domain untested:
+
+```bash
+npx wrangler versions upload      # prints a Version Preview URL
+```
+
+That publishes the version to a private URL and leaves `getfivestartap.com`
+alone. Look at it, then promote the exact version you looked at:
+
+```bash
+npx wrangler versions deploy <version-id>@100 --yes
+```
+
+`wrangler deploy` still works and still goes straight to production — use it
+only when you mean to skip the preview.
+
+Two things to know:
+
+- Previews share the **live database**, so a test through the contact form
+  lands in the real inbox.
+- Edge propagation takes a few seconds after promoting. If a check says the
+  old version is still up, wait and look again before assuming it failed.
+
+`workers_dev` is on because Cloudflare only serves preview URLs when it is.
+The Worker redirects the bare workers.dev host to the custom domain, but
+static assets are served at the edge before the Worker runs, so that redirect
+never fires for the homepage — the `<link rel="canonical">` tag in
+`index.html` is what actually keeps the duplicate hosts out of search results.
+
+---
+
 ### Costs
 
 | | |

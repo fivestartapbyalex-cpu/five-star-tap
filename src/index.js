@@ -24,6 +24,38 @@ const clientIp = (c) => c.req.header('cf-connecting-ip') || c.req.header('x-forw
 const isSecure = (c) => new URL(c.req.url).protocol === 'https:';
 
 /* ------------------------------------------------------------------ *
+ * canonical host
+ *
+ * workers.dev has to stay enabled for Cloudflare to serve preview URLs, but
+ * the bare workers.dev host would otherwise be a second public copy of the
+ * whole site. Send it to the real domain, and leave version-prefixed preview
+ * hosts alone so previews still work.
+ * ------------------------------------------------------------------ */
+
+const CANONICAL_HOST = 'getfivestartap.com';
+const PREVIEW_HOST = /^[0-9a-f]{8}-/;   // <version-prefix>-<worker>.<sub>.workers.dev
+
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  const onWorkersDev = url.hostname.endsWith('.workers.dev');
+
+  if (onWorkersDev && !PREVIEW_HOST.test(url.hostname)) {
+    url.hostname = CANONICAL_HOST;
+    url.protocol = 'https:';
+    url.port = '';
+    return c.redirect(url.toString(), 301);
+  }
+
+  await next();
+
+  // A preview should never end up in a search index.
+  if (onWorkersDev) {
+    c.res = new Response(c.res.body, c.res);
+    c.res.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+});
+
+/* ------------------------------------------------------------------ *
  * session
  * ------------------------------------------------------------------ */
 

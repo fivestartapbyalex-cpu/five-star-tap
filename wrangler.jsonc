@@ -37,5 +37,16 @@
     "MAP_ZOOM": "10"
   },
 
+  // Preview URLs: `wrangler versions upload` publishes a version to a private
+  // URL without touching the live domain. Promote it with
+  // `wrangler versions deploy`.
+  //
+  // Cloudflare only serves preview URLs when the workers.dev subdomain is
+  // enabled, so it is on -- but src/index.js redirects the bare workers.dev
+  // host to the custom domain, so it never becomes a second public copy of
+  // the site. Version-prefixed preview hosts are left alone.
+  "workers_dev": true,
+  "preview_urls": true,
+
   "observability": { "enabled": true }
 }
